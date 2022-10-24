@@ -63,7 +63,7 @@ Matrix4x4 Matrix4x4::Constant(double value) {
 }
 
 Matrix4x4 Matrix4x4::Zero() {
-  return Matrix4x4::Constant(0);
+  return Constant(0);
 }
 
 Matrix4x4 Matrix4x4::Scale(const Vec3D &factor) {
@@ -79,7 +79,7 @@ Matrix4x4 Matrix4x4::Scale(const Vec3D &factor) {
 }
 
 Matrix4x4 Matrix4x4::Translation(const Vec3D &v) {
-  Matrix4x4 t = Matrix4x4::Identity();
+  Matrix4x4 t = Identity();
 
   t._arr[0][3] = v.x();
   t._arr[1][3] = v.y();
@@ -89,7 +89,7 @@ Matrix4x4 Matrix4x4::Translation(const Vec3D &v) {
 }
 
 Matrix4x4 Matrix4x4::RotationX(double rx) {
-  Matrix4x4 Rx = Matrix4x4::Identity();
+  Matrix4x4 Rx = Identity();
 
   double c = cos(rx), s = sin(rx);
 
@@ -102,7 +102,7 @@ Matrix4x4 Matrix4x4::RotationX(double rx) {
 }
 
 Matrix4x4 Matrix4x4::RotationY(double ry) {
-  Matrix4x4 Ry = Matrix4x4::Identity();
+  Matrix4x4 Ry = Identity();
 
   double c = cos(ry), s = sin(ry);
 
@@ -115,7 +115,7 @@ Matrix4x4 Matrix4x4::RotationY(double ry) {
 }
 
 Matrix4x4 Matrix4x4::RotationZ(double rz) {
-  Matrix4x4 Rz = Matrix4x4::Identity();
+  Matrix4x4 Rz = Identity();
 
   double c = cos(rz), s = sin(rz);
 
@@ -168,7 +168,7 @@ Matrix4x4 Matrix4x4::Projection(double fov, double aspect, double ZNear, double 
 }
 
 Matrix4x4 Matrix4x4::ScreenSpace(int width, int height) {
-  Matrix4x4 s = Matrix4x4::Identity();
+  Matrix4x4 s = Identity();
 
   s._arr[0][0] = -0.5 * width;
   s._arr[1][1] = -0.5 * height;
@@ -181,7 +181,22 @@ Matrix4x4 Matrix4x4::ScreenSpace(int width, int height) {
 Matrix4x4 Matrix4x4::View(const Vec3D &left, const Vec3D &up, const Vec3D &lookAt, const Vec3D &eye) {
   Matrix4x4 V = Zero();
 
-  // TODO: implement (lesson 4)
+  V._arr[0][0] = left.x();
+  V._arr[0][1] = left.y();
+  V._arr[0][2] = left.z();
+  V._arr[0][3] = -eye.dot(left);
+
+  V._arr[1][0] = up.x();
+  V._arr[1][1] = up.y();
+  V._arr[1][2] = up.z();
+  V._arr[1][3] = -eye.dot(up);
+
+  V._arr[2][0] = lookAt.x();
+  V._arr[2][1] = lookAt.y();
+  V._arr[2][2] = lookAt.z();
+  V._arr[2][3] = -eye.dot(lookAt);
+
+  V._arr[3][3] = 1;
 
   return V;
 }
